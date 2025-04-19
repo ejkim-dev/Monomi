@@ -64,6 +64,7 @@ dependencies {
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.androidx.multidex)
     ksp(libs.room.compiler)
 
     // Hilt
@@ -77,6 +78,10 @@ dependencies {
     // Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.kt)
+
+    implementation(libs.landscapist.bom)
+    implementation(libs.landscapist.coil)
+    implementation(libs.landscapist.placeholder)
 
     // Paging
     implementation(libs.paging.runtime)
