@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         google {
@@ -21,4 +23,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Monomi"
 include(":app")
- 
+
+include(":core:network")
+include(":core:data")
+include(":core:model")

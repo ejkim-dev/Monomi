@@ -1,12 +1,16 @@
-package com.example.monomi.data.repository
+package com.example.monomi.core.data.repository.bookmark
 
-import com.example.monomi.domain.model.SearchItem
-import com.example.monomi.domain.repository.BookmarkRepository
+import android.util.Log
+import com.example.monomi.core.model.SearchItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class FakeBookmarkRepository : BookmarkRepository {
+@Singleton
+class FakeBookmarkRepository @Inject constructor(
+) : BookmarkRepository {
 
     private val bookmarks = MutableStateFlow<List<SearchItem>>(emptyList())
 
@@ -14,6 +18,7 @@ class FakeBookmarkRepository : BookmarkRepository {
 
     override suspend fun toggle(item: SearchItem) {
         bookmarks.update { list ->
+            Log.d("######", "toggle: ${list.size}")
             if (list.any { it.id == item.id }) list.filterNot { it.id == item.id }
             else list + item.copy(isBookmarked = true)
         }

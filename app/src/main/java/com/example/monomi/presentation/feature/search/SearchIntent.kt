@@ -1,6 +1,6 @@
-package com.example.monomi.presentation.search
+package com.example.monomi.presentation.feature.search
 
-import com.example.monomi.domain.model.SearchItem
+import com.example.monomi.core.model.SearchItem
 
 sealed interface SearchIntent {
     data class TextChanged(val value: String) : SearchIntent

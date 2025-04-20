@@ -1,9 +1,9 @@
-package com.example.monomi.presentation.search
+package com.example.monomi.presentation.feature.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.monomi.domain.repository.BookmarkRepository
-import com.example.monomi.domain.repository.SearchRepository
+import com.example.monomi.core.data.repository.bookmark.BookmarkRepository
+import com.example.monomi.core.data.repository.search.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*

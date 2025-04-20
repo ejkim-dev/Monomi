@@ -1,11 +1,11 @@
-package com.example.monomi.data.repository
+package com.example.monomi.core.data.repository.search
 
-import com.example.monomi.domain.model.SearchItem
-import com.example.monomi.domain.repository.SearchRepository
+import com.example.monomi.core.model.SearchItem
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 import kotlin.random.Random
 
-class FakeSearchRepository : SearchRepository {
+class FakeSearchRepository @Inject constructor() : SearchRepository {
 
     private val previewPool = List(200) { index ->
         val isImage = index % 2 == 0
@@ -13,8 +13,10 @@ class FakeSearchRepository : SearchRepository {
             id = "mock_$index",
             thumbnailUrl = "https://picsum.photos/200/200?random=$index",
             linkUrl = "https://example.com/$index",
-            datetime = "2025-04-${((index % 30) + 1).toString()
-                .padStart(2, '0')}T12:00:00",
+            dateTime = "2025-04-${
+                ((index % 30) + 1).toString()
+                    .padStart(2, '0')
+            }T12:00:00",
             type = if (isImage) SearchItem.Type.IMAGE else SearchItem.Type.VIDEO
         )
     }

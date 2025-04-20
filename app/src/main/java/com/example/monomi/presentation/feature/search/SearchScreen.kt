@@ -1,4 +1,4 @@
-package com.example.monomi.presentation.search
+package com.example.monomi.presentation.feature.search
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

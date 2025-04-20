@@ -1,8 +1,8 @@
-package com.example.monomi.presentation.bookmark
+package com.example.monomi.presentation.feature.bookmark
 
 import androidx.lifecycle.ViewModel
-import com.example.monomi.domain.model.SearchItem
-import com.example.monomi.domain.repository.BookmarkRepository
+import com.example.monomi.core.data.repository.bookmark.BookmarkRepository
+import com.example.monomi.core.model.SearchItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

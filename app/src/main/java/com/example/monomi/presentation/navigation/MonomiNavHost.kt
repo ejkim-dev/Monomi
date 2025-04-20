@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.monomi.presentation.bookmark.BookmarkScreen
-import com.example.monomi.presentation.search.SearchScreen
+import com.example.monomi.presentation.feature.bookmark.BookmarkScreen
+import com.example.monomi.presentation.feature.search.SearchScreen
 
 @Composable
 fun MonomiNavHost() {

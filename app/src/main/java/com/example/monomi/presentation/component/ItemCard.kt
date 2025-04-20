@@ -13,8 +13,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.monomi.R
-import com.example.monomi.domain.model.SearchItem
+import com.example.monomi.core.model.SearchItem
 import com.example.monomi.presentation.theme.MonomiTheme
+import com.example.monomi.presentation.util.PreviewUtil
 
 @Composable
 fun ItemCard(
@@ -32,7 +33,7 @@ fun ItemCard(
             )
             Spacer(Modifier.width(8.dp))
             Column(Modifier.weight(1f)) {
-                Text(item.datetime.take(10))
+                Text(item.dateTime.take(10))
                 Text(item.type.name)
             }
             if (showBookmarkButton) {
@@ -52,13 +53,7 @@ fun ItemCard(
 private fun SearchItemCardPreview() {
     MonomiTheme {
         ItemCard(
-            item = SearchItem(
-                id = "test",
-                thumbnailUrl = "",
-                linkUrl = "",
-                datetime = "2025-01-01",
-                type = SearchItem.Type.IMAGE
-            ),
+            item = PreviewUtil.mockSearchItem(true),
             onBookmark = {}
         )
     }

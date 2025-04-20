@@ -1,11 +1,7 @@
-package com.example.monomi.domain.repository
+package com.example.monomi.core.data.repository.bookmark
 
-import com.example.monomi.domain.model.SearchItem
+import com.example.monomi.core.model.SearchItem
 import kotlinx.coroutines.flow.Flow
-
-interface SearchRepository {
-    suspend fun search(query: String, page: Int, pageSize: Int): List<SearchItem>
-}
 
 interface BookmarkRepository {
     fun observeBookmarks(): Flow<List<SearchItem>>
