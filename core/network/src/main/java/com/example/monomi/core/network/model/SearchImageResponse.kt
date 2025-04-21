@@ -12,6 +12,7 @@ data class SearchImageResponse(
 @Serializable
 data class ImageDocument(
     @SerialName("thumbnail_url") val thumbnailUrl: String,
+    @SerialName("display_sitename") val displayName: String,
     @SerialName("image_url") val imageUrl: String,
     val datetime: String,
     @SerialName("doc_url") val docUrl: String

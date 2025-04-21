@@ -1,22 +1,45 @@
 package com.example.monomi.ui.feature.search
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.monomi.ui.component.ExitConfirmationDialog
 import com.example.monomi.ui.component.SearchItemCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     navigateToBookmark: () -> Unit,
+    onExitConfirm: () -> Unit,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.state.collectAsState()
+    val focusManager = LocalFocusManager.current
+
+    // 뒤로가기 확인
+    var showExitDialog by remember { mutableStateOf(false) }
+
+    BackHandler {
+        showExitDialog = true
+    }
+
+    // 종료 확인
+    if (showExitDialog) {
+        ExitConfirmationDialog(
+            onDismiss = { showExitDialog = false },
+            onConfirm = onExitConfirm
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -40,7 +63,15 @@ fun SearchScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                label = { Text("검색어 입력") }
+                label = { Text("검색어 입력") },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                keyboardActions = KeyboardActions(
+                    onSearch = {
+                        viewModel.sendIntent(SearchIntent.Search)
+                        focusManager.clearFocus()
+                    }
+                ),
+                maxLines = 1
             )
 
             LazyColumn(

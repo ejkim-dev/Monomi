@@ -12,6 +12,7 @@ class FakeSearchRepository @Inject constructor() : SearchRepository {
         val isImage = index % 2 == 0
         SearchItem(
             id = "mock_$index",
+            title = "Mock Item $index",
             thumbnailUrl = "https://picsum.photos/200/200?random=$index",
             linkUrl = "https://example.com/$index",
             dateTime = "2025-04-${

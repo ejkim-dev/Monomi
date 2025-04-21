@@ -39,12 +39,14 @@ class SearchViewModel @Inject constructor(
         intentFlow.onEach { intent ->
             when (intent) {
                 is SearchIntent.TextChanged -> {
-                    currentPage = 0
                     _state.value = SearchUiState(query = intent.value)
-                    search()
                 }
                 SearchIntent.LoadNextPage -> search()
                 is SearchIntent.ToggleBookmark -> toggleBookmark(intent.item)
+                SearchIntent.Search -> {
+                    currentPage = 0
+                    search()
+                }
             }
         }.launchIn(viewModelScope)
     }
