@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.monomi.core.data.repository.bookmark.BookmarkRepository
 import com.example.monomi.core.data.repository.search.SearchRepository
+import com.example.monomi.core.model.ResultModel
+import com.example.monomi.core.model.SearchItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
@@ -16,10 +18,8 @@ class SearchViewModel @Inject constructor(
     private val bookmarkRepo: BookmarkRepository
 ) : ViewModel() {
 
+    private var currentPage = 0
     private val intentFlow = MutableSharedFlow<SearchIntent>()
-
-    private var currentPage = 1
-    private val pageSize = 30
 
     private val _state = MutableStateFlow(SearchUiState())
     val state: StateFlow<SearchUiState> = _state.asStateFlow()
@@ -39,52 +39,68 @@ class SearchViewModel @Inject constructor(
         intentFlow.onEach { intent ->
             when (intent) {
                 is SearchIntent.TextChanged -> {
-                    currentPage = 1
-                    _state.update { it.copy(query = intent.value, items = emptyList()) }
+                    currentPage = 0
+                    _state.value = SearchUiState(query = intent.value)
                     search()
                 }
                 SearchIntent.LoadNextPage -> search()
-                is SearchIntent.ToggleBookmark -> {
-                    val itemId = intent.item.id
-                    val newBookmark = !intent.item.isBookmarked
-
-                    // 저장소에 북마크 아이템 업데이트
-                    bookmarkRepo.toggle(intent.item)
-
-                    // 특정 아이템 북마크 상태 업데이트
-                    _state.update { currentState ->
-                        val currentItems = currentState.items
-                        val updatedItems = currentItems.toMutableList()
-
-                        for (i in updatedItems.indices) {
-                            if (updatedItems[i].id == itemId) {
-
-                                updatedItems[i] = updatedItems[i].copy(isBookmarked = newBookmark)
-                                break
-                            }
-                        }
-
-                        currentState.copy(items = updatedItems)
-                    }
-
-                    _effect.send(SearchSideEffect.ShowToast("보관함 ${if (intent.item.isBookmarked) "해제" else "저장"}"))
-                }
+                is SearchIntent.ToggleBookmark -> toggleBookmark(intent.item)
             }
         }.launchIn(viewModelScope)
     }
 
-    private fun search() = viewModelScope.launch {
-        if (_state.value.isLoading || _state.value.endReached) return@launch
-        _state.update { it.copy(isLoading = true) }
-
-        val result = searchRepo.search(_state.value.query, currentPage, pageSize)
-        _state.update {
-            it.copy(
-                items = it.items + result,
-                isLoading = false,
-                endReached = result.isEmpty()
-            )
+    private fun toggleBookmark(item: SearchItem) {
+        viewModelScope.launch {
+            bookmarkRepo.toggle(item)
+            val newBookmark = !item.isBookmarked
+            _state.update { state ->
+                val updated = state.items.map {
+                    if (it.id == item.id) it.copy(isBookmarked = newBookmark)
+                    else it
+                }
+                state.copy(items = updated)
+            }
         }
-        currentPage++
+    }
+
+    private fun search() {
+        viewModelScope.launch {
+            // 이미 로딩 중이거나 마지막이면 무시
+            val currentState = _state.value
+            if (currentState.isLoading || currentState.endReached) return@launch
+
+            _state.update { it.copy(isLoading = true) }
+
+            when (val result = searchRepo.search(currentState.query, currentPage)) {
+                is ResultModel.Success -> {
+                    val newItems = result.data
+                    _state.update { state ->
+                        val combined =
+                            if (currentPage == 1) newItems else state.items + newItems
+                        state.copy(
+                            items = combined,
+                            isLoading = false,
+                            endReached = newItems.isEmpty()
+                        )
+                    }
+                    currentPage++
+                }
+                // 빈 검색일 때는 데이터 없음
+                is ResultModel.Empty -> {
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            endReached = true
+                        )
+                    }
+                }
+                is ResultModel.Error -> {
+                    _state.update { it.copy(isLoading = false) }
+                }
+                is ResultModel.Loading -> {
+
+                }
+            }
+        }
     }
 }

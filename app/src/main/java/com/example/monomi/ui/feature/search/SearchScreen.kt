@@ -8,7 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.monomi.ui.component.ItemCard
+import com.example.monomi.ui.component.SearchItemCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +51,7 @@ fun SearchScreen(
                     if (index == uiState.items.lastIndex - 5) {
                         viewModel.sendIntent(SearchIntent.LoadNextPage)
                     }
-                    ItemCard(item) {
+                    SearchItemCard(item) {
                         viewModel.sendIntent(SearchIntent.ToggleBookmark(item))
                     }
                     Spacer(Modifier.height(6.dp))

@@ -1,13 +1,14 @@
 package com.example.monomi.core.network.di
 
-import com.example.monomi.core.model.BuildConfig
-import com.example.monomi.core.network.source.network.KakaoApi
-import com.example.monomi.core.network.source.network.MonomiClient
+import com.example.monomi.core.network.BuildConfig
+import com.example.monomi.core.network.service.KakaoApiService
+import com.example.monomi.core.network.service.MonomiClient
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -29,7 +30,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
-        // 1) 헤더용 Interceptor
+        // Header Interceptor
         val authInterceptor = Interceptor { chain ->
             val request = chain.request().newBuilder()
                 .addHeader("Authorization", "KakaoAK ${BuildConfig.KAKAO_REST_API_KEY}")
@@ -37,36 +38,37 @@ object NetworkModule {
             chain.proceed(request)
         }
 
-        // 2) 로깅 Interceptor (디버그 전용)
+        // 로깅 Interceptor (디버그 전용)
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
         return OkHttpClient.Builder()
-            .addInterceptor(authInterceptor)                         // 헤더 자동 추가
+            .addInterceptor(authInterceptor)
             .apply {
                 if (BuildConfig.DEBUG) addNetworkInterceptor(logging)
             }
             .build()
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     @Provides
     @Singleton
-    fun provideKakaoApi(
+    fun provideKakaoApiService(
         json: Json,
         okHttpClient: OkHttpClient
-    ): KakaoApi {
+    ): KakaoApiService {
         return Retrofit.Builder()
             .baseUrl("https://dapi.kakao.com/")
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .client(okHttpClient)
             .build()
-            .create(KakaoApi::class.java)
+            .create(KakaoApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideMonomiClient(kakaoApi: KakaoApi): MonomiClient {
-        return MonomiClient(kakaoApi)
+    fun provideMonomiClient(kakaoApiService: KakaoApiService): MonomiClient {
+        return MonomiClient(kakaoApiService)
     }
 }

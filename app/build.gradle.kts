@@ -38,6 +38,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 }
@@ -80,10 +81,6 @@ dependencies {
     implementation(libs.landscapist.bom)
     implementation(libs.landscapist.coil)
     implementation(libs.landscapist.placeholder)
-
-    // Paging
-    implementation(libs.paging.runtime)
-    implementation(libs.paging.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

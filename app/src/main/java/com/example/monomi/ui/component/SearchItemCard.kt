@@ -18,7 +18,7 @@ import com.example.monomi.ui.theme.MonomiTheme
 import com.example.monomi.ui.util.PreviewUtil
 
 @Composable
-fun ItemCard(
+fun SearchItemCard(
     item: SearchItem,
     showBookmarkButton: Boolean = true,
     onBookmark: () -> Unit
@@ -52,7 +52,7 @@ fun ItemCard(
 @Composable
 private fun SearchItemCardPreview() {
     MonomiTheme {
-        ItemCard(
+        SearchItemCard(
             item = PreviewUtil.mockSearchItem(true),
             onBookmark = {}
         )

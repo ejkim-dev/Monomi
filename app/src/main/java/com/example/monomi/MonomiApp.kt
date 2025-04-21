@@ -1,7 +1,6 @@
 package com.example.monomi
 
 import android.app.Application
-import androidx.multidex.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 

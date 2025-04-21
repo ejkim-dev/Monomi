@@ -15,10 +15,6 @@ android {
         minSdk = libs.versions.minSdk.get().toInt()
     }
 
-    buildFeatures {
-        buildConfig = true
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -30,6 +26,9 @@ android {
 
 dependencies {
     implementation(projects.core.model)
+    implementation(projects.core.network)
+
+    implementation(libs.timber)
     
     implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android.core)

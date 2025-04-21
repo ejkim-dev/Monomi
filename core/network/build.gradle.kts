@@ -13,12 +13,11 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
     }
 
-       buildFeatures {
-       buildConfig = true
-   }
+    buildFeatures {
+        buildConfig = true
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -35,9 +34,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android.core)
 
-    implementation(libs.paging.runtime)
-    implementation(libs.paging.common)
-
     ksp(libs.hilt.compiler)
     testImplementation(libs.junit)
 
@@ -45,7 +41,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     // network
-    implementation(libs.sandwich)
     implementation(platform(libs.retrofit.bom))
     implementation(platform(libs.okhttp.bom))
     implementation(libs.bundles.retrofitBundle)

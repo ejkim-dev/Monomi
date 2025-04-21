@@ -1,9 +1,9 @@
 package com.example.monomi.core.data.di
 
 import com.example.monomi.core.data.repository.bookmark.BookmarkRepository
-import com.example.monomi.core.data.repository.bookmark.FakeBookmarkRepository
-import com.example.monomi.core.data.repository.search.FakeSearchRepository
+import com.example.monomi.core.data.repository.bookmark.BookmarkRepositoryImpl
 import com.example.monomi.core.data.repository.search.SearchRepository
+import com.example.monomi.core.data.repository.search.SearchRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -12,17 +12,17 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface DataModule {
+interface RepositoryModule {
 
     @Binds
     @Singleton
     fun bindsSearchRepository(
-        searchRepositoryImpl: FakeSearchRepository
+        searchRepositoryImpl: SearchRepositoryImpl
     ): SearchRepository
 
     @Binds
     @Singleton
     fun bindsBookMarkRepository(
-        bookmarkRepositoryImpl: FakeBookmarkRepository
+        bookmarkRepositoryImpl: BookmarkRepositoryImpl
     ): BookmarkRepository
 }

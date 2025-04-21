@@ -10,7 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.monomi.ui.component.ItemCard
+import com.example.monomi.ui.component.SearchItemCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,7 +25,7 @@ fun BookmarkScreen(
             TopAppBar(
                 title = { Text("보관함") },
                 navigationIcon = { IconButton(onClick = navigateBack) {
-                    Icon(Icons.Default.ArrowBack, null)
+                    Icon(Icons.Default.ArrowBack, "뒤로 가기")
                 }}
             )
         }
@@ -37,7 +37,7 @@ fun BookmarkScreen(
                 .fillMaxSize()
         ) {
             items(list) { item ->
-                ItemCard(item, false) { }
+                SearchItemCard(item, false) { }
                 Spacer(Modifier.height(6.dp))
             }
         }

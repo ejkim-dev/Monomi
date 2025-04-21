@@ -15,7 +15,6 @@ lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
 composeBom = "2025.04.00"
 retrofit = "2.11.0"
-sandwich = "2.0.10"
 okHttp = "4.12.0"
 kotlinxSerializationJson = "1.7.3"
 retrofitKotlinxSerialization = "0.8.0"
@@ -24,12 +23,9 @@ hilt = "2.56.1"
 androidxHiltNavigationCompose = "1.2.0"
 navigation = "2.8.9"
 coil = "2.7.0"
-paging = "3.3.6"
 timber = "5.0.1"
 multidex = "2.0.1"
 landscapist = "2.3.4"
-appcompat = "1.7.0"
-material = "1.12.0"
 jetbrainsKotlinJvm = "2.1.20"
 secrets-gradle-plugin = "2.0.1"
 
@@ -59,7 +55,6 @@ retrofit-kotlinx-serialization-converter = { group = "com.jakewharton.retrofit",
 okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okHttp" }
 okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor" }
 okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver" }
-sandwich = { module = "com.github.skydoves:sandwich-retrofit", version.ref = "sandwich" }
 
 # Kotlinx Serialization
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
@@ -87,16 +82,9 @@ landscapist-coil = { group = "com.github.skydoves", name = "landscapist-coil" }
 
 landscapist-placeholder = { group = "com.github.skydoves", name = "landscapist-placeholder" }
 
-# Paging
-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
-paging-common = { group = "androidx.paging", name = "paging-common-android", version.ref = "paging" }
-
 # Logging
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 androidx-multidex = { group = "androidx.multidex", name = "multidex", version.ref = "multidex" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
