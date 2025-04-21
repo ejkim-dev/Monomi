@@ -9,6 +9,5 @@ sealed class ResultModel<out T> {
         val message: String?
     ) : ResultModel<Nothing>()
 
-    data object Loading : ResultModel<Nothing>()
     data object Empty : ResultModel<Nothing>()
 }

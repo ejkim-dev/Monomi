@@ -99,9 +99,6 @@ class SearchViewModel @Inject constructor(
                 is ResultModel.Error -> {
                     _state.update { it.copy(isLoading = false) }
                 }
-                is ResultModel.Loading -> {
-
-                }
             }
         }
     }
