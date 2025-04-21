@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.secrets.gradle.plugin)
 }
 
 android {
@@ -34,6 +35,9 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android.core)
 
+    implementation(libs.paging.runtime)
+    implementation(libs.paging.common)
+
     ksp(libs.hilt.compiler)
     testImplementation(libs.junit)
 
@@ -49,4 +53,8 @@ dependencies {
 
     // json parsing
     implementation(libs.kotlinx.serialization.json)
+}
+
+secrets {
+    defaultPropertiesFileName = "secrets.properties"
 }

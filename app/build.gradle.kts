@@ -59,11 +59,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.timber)
 
-    // Retrofit + Kotlinx Serialization
-    implementation(libs.retrofit)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.retrofit.kotlinx.serialization.converter)
-
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
