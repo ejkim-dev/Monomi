@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.example.monomi"
-    compileSdk = 35
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.example.monomi"
-        minSdk = 24
-        targetSdk = 35
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
@@ -38,11 +38,15 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 }
 
 dependencies {
+
+    implementation(projects.core.data)
+    implementation(projects.core.model)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -55,17 +59,6 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.timber)
-
-    // Retrofit + Kotlinx Serialization
-    implementation(libs.retrofit)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.retrofit.kotlinx.serialization.converter)
-
-    // Room
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    implementation(libs.androidx.multidex)
-    ksp(libs.room.compiler)
 
     // Hilt
     implementation(libs.hilt.android.core)
@@ -82,10 +75,6 @@ dependencies {
     implementation(libs.landscapist.bom)
     implementation(libs.landscapist.coil)
     implementation(libs.landscapist.placeholder)
-
-    // Paging
-    implementation(libs.paging.runtime)
-    implementation(libs.paging.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
