@@ -29,4 +29,7 @@ class BookmarkRepositoryImpl @Inject constructor(
 
     override suspend fun isBookmarked(id: String): Boolean =
         bookmarkDao.isBookmarked(id)
+
+    override suspend fun getBookmarkedItemIds(): Set<String> =
+        bookmarkDao.getBookmarkedItemIds().toSet()
 }

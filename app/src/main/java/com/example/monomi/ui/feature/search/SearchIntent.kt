@@ -15,7 +15,3 @@ data class SearchUiState(
     val isLoading: Boolean = false,
     val endReached: Boolean = false
 )
-
-sealed interface SearchSideEffect {
-    data class ShowToast(val msg: String) : SearchSideEffect
-}

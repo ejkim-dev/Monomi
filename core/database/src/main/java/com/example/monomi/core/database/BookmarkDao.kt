@@ -20,4 +20,7 @@ interface BookmarkDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM bookmarks WHERE id = :id)")
     suspend fun isBookmarked(id: String): Boolean
+
+    @Query("SELECT id FROM bookmarks")
+    suspend fun getBookmarkedItemIds(): List<String>
 }

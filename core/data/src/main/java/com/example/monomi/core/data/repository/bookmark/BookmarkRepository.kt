@@ -7,4 +7,5 @@ interface BookmarkRepository {
     fun observeBookmarks(): Flow<List<SearchItem>>
     suspend fun toggle(item: SearchItem)            // 북마크 저장·해제 토글
     suspend fun isBookmarked(id: String): Boolean
+    suspend fun getBookmarkedItemIds(): Set<String>
 }

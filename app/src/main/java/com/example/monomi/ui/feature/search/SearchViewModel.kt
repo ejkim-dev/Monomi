@@ -7,7 +7,6 @@ import com.example.monomi.core.data.repository.search.SearchRepository
 import com.example.monomi.core.model.ResultModel
 import com.example.monomi.core.model.SearchItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,9 +22,6 @@ class SearchViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(SearchUiState())
     val state: StateFlow<SearchUiState> = _state.asStateFlow()
-
-    private val _effect = Channel<SearchSideEffect>(Channel.BUFFERED)
-    val effect = _effect.receiveAsFlow()
 
     init {
         observeIntent()
@@ -75,14 +71,21 @@ class SearchViewModel @Inject constructor(
 
             when (val result = searchRepo.search(currentState.query, currentPage)) {
                 is ResultModel.Success -> {
-                    val newItems = result.data
+                    // 북마크된 항목 ID 들
+                    val bookmarkedIds = bookmarkRepo.getBookmarkedItemIds()
+
+                    // 북마크된 결과인지 확인
+                    val itemsWithBookmarkStatus = result.data.map { item ->
+                        item.copy(isBookmarked = item.id in bookmarkedIds)
+                    }
+
                     _state.update { state ->
                         val combined =
-                            if (currentPage == 1) newItems else state.items + newItems
+                            if (currentPage == 1) itemsWithBookmarkStatus else state.items + itemsWithBookmarkStatus
                         state.copy(
                             items = combined,
                             isLoading = false,
-                            endReached = newItems.isEmpty()
+                            endReached = result.data.isEmpty()
                         )
                     }
                     currentPage++
