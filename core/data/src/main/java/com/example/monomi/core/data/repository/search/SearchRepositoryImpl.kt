@@ -106,6 +106,6 @@ class SearchRepositoryImpl @Inject constructor(
 
     companion object {
         // 캐싱 5분
-        private const val CACHE_DURATION_MS = /*5 * 60 * 1000L*/ 10000L
+        private const val CACHE_DURATION_MS = 5 * 60 * 1000L
     }
 }
