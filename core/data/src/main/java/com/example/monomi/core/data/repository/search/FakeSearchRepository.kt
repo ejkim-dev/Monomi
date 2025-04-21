@@ -14,7 +14,6 @@ class FakeSearchRepository @Inject constructor() : SearchRepository {
             id = "mock_$index",
             title = "Mock Item $index",
             thumbnailUrl = "https://picsum.photos/200/200?random=$index",
-            linkUrl = "https://example.com/$index",
             dateTime = "2025-04-${
                 ((index % 30) + 1).toString()
                     .padStart(2, '0')

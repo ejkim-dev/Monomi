@@ -7,7 +7,6 @@ object PreviewUtil {
         id = "test",
         title = "title",
         thumbnailUrl = "",
-        linkUrl = "",
         dateTime = "2025-01-01T00:00:00.000Z",
         type = SearchItem.Type.IMAGE,
         isBookmarked = isBookmarked

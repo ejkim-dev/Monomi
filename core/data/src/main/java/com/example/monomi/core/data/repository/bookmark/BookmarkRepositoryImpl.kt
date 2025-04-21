@@ -1,25 +1,32 @@
 package com.example.monomi.core.data.repository.bookmark
 
+import com.example.monomi.core.database.BookmarkDao
+import com.example.monomi.core.database.entity.mapper.asDomain
+import com.example.monomi.core.database.entity.mapper.asEntity
 import com.example.monomi.core.model.SearchItem
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class BookmarkRepositoryImpl @Inject constructor(
+    private val bookmarkDao: BookmarkDao
 ) : BookmarkRepository {
 
-    private val bookmarks = MutableStateFlow<List<SearchItem>>(emptyList())
-
-    override fun observeBookmarks(): Flow<List<SearchItem>> = bookmarks
+    override fun observeBookmarks(): Flow<List<SearchItem>> {
+        return bookmarkDao.getBookmarks().map { entities ->
+            entities.map { it.asDomain() }
+        }
+    }
 
     override suspend fun toggle(item: SearchItem) {
-        bookmarks.update { list ->
-            if (list.any { it.id == item.id }) list.filterNot { it.id == item.id }
-            else list + item.copy(isBookmarked = true)
+        val isBookmarked = isBookmarked(item.id)
+        if (isBookmarked) {
+            bookmarkDao.deleteBookmark(item.id)
+        } else {
+            bookmarkDao.insertBookmark(item.asEntity())
         }
     }
 
     override suspend fun isBookmarked(id: String): Boolean =
-        bookmarks.value.any { it.id == id }
+        bookmarkDao.isBookmarked(id)
 }
