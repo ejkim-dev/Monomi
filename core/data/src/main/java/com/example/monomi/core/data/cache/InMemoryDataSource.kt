@@ -1,31 +1,22 @@
 package com.example.monomi.core.data.cache
 
-import kotlin.reflect.KClass
+import com.example.monomi.core.data.cache.model.CacheEntry
+import java.util.concurrent.ConcurrentHashMap
 
 object InMemoryDataSource {
-    // 타입 정보 저장
-    private val store = mutableMapOf<String, Pair<KClass<*>, Any>>()
+    // CacheEntry 계층만 저장하므로 Any·KClass 추적이 필요 없음
+    // 동시성 문제 고려
+    private val store =  ConcurrentHashMap<String, CacheEntry>()
 
-    // 타입 정보와 함께 데이터 저장
-    fun <T : Any> saveData(key: String, value: T) {
-        store[key] = Pair(value::class, value)
+    // 이제 CacheEntry 계층만 저장하므로 Any·KClass 추적이 필요 없음
+    fun saveData(key: String, value: CacheEntry) {
+        store.put(key, value)
     }
 
-    inline fun <reified T : Any> loadData(key: String, defaultValue: T? = null): T? {
-        return loadData(key, T::class, defaultValue)
-    }
-
+    // 캐시 조회 – 요청한 CacheEntry의 서브타입이 아니면 null
     @Suppress("UNCHECKED_CAST")
-    fun <T : Any> loadData(key: String, clazz: KClass<T>, defaultValue: T? = null): T? {
-        val pair = store[key] ?: return defaultValue
-
-        // 저장된 타입과 요청된 타입 확인
-        return if (clazz.isInstance(pair.second)) {
-            pair.second as T
-        } else {
-            defaultValue
-        }
-    }
+    fun <T : CacheEntry> loadData(key: String, defaultValue: CacheEntry? = null): T? =
+        (store[key] as? T) ?: (defaultValue as? T)
 
 
     fun clearData(key: String) = store.remove(key)
